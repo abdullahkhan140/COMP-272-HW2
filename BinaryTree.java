@@ -232,7 +232,6 @@ public class BinaryTree {
         replaceValueHelper(node.right, oldVal, newVal);
     }
 
-
     /*
      * private method findMinHelper()
      *
@@ -246,15 +245,15 @@ public class BinaryTree {
      * Depth first search of the tree is based on recursion. This will result
      * in very few lines of code.
      */
-
     private int findMinHelper(Node node) {
-        if (node == null) {
+        if (node == null) { // If the node is null, return the maximum possible value
             return Integer.MAX_VALUE;
         }
-        int minValOfData = (node.data);
-        int leftMinOfData = findMinHelper(node.left);
-        int rightMinOfData = findMinHelper(node.right);
+        int minValOfData = (node.data); // Get the current node's value
+        int leftMinOfData = findMinHelper(node.left); // find the minimum value in the left subtree
+        int rightMinOfData = findMinHelper(node.right); //find the minimum value in the left subtree
         return Math.min(minValOfData, Math.min(leftMinOfData, rightMinOfData));
+    // Return the smallest value among the current node, left subtree, and right subtree
     }
 
     /*
@@ -280,7 +279,7 @@ public class BinaryTree {
         if (node.data > val){
             count =1;
         }
-        // Recursively count nodes in the left and right subtrees
+        // count nodes in the left and right subtrees
         count += nodesGTHelper(node.left, val);
         count += nodesGTHelper(node.right, val);
         return count;
@@ -308,21 +307,18 @@ public class BinaryTree {
      */
 
     public double average() {
-        int[] sumAndCount = averageHelper(root);
-        return (double) sumAndCount[0] / sumAndCount[1];
+        int[] total = findSumAndCount(root);
+        return (double) total[0] / total[1];
     }
-    private int[] averageHelper(Node n) {
-        if (n == null) {
-            return new int[]{0, 0};
+    private int[] findSumAndCount(Node node) {
+        if (node == null) {
+            return new int[] {0, 0}; // base case
         }
         // Recursive case: traverse left and right subtrees
-        int[] left = averageHelper(n.left);
-        int[] right = averageHelper(n.right);
+        int[] left = findSumAndCount(node.left), right = findSumAndCount(node.right);
+        int totalSumOfNodes = node.data + left[0] + right[0];// Calculate the total sum and count of nodes
+        int totalCountOfNodes = 1 + left[1] + right[1]; // current node while also counting for total.
 
-        // Calculate the total sum and count of nodes at this subtree
-        int totalSumOfNodes = n.data + left[0] + right[0];
-        int totalCountOfNodes = 1 + left[1] + right[1]; // account for current node while also counting for total.
-
-        return new int[]{totalSumOfNodes, totalCountOfNodes};
+        return new int[]{totalSumOfNodes, totalCountOfNodes}; // return array of total sum and count
     }
 }
